@@ -1,6 +1,6 @@
 
 const express = require('express')
-const app = express()
+const app = express();
 const port =process.env.PORT || 4000;
 const { MongoClient } = require('mongodb');
 const cors=require('cors')
@@ -14,7 +14,7 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ufugb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-// console.log(uri)
+console.log(uri)
 async function run() {
 
     try {
@@ -103,6 +103,7 @@ async function run() {
 
     // checking the admin 
    app.get('/admins/:adminemail',async(req,res)=>{
+    console.log(req.params.adminemail,'age')
     const email=req.params.adminemail;
     const query={email:email};
     const result= await totalUsers.findOne(query);
@@ -154,5 +155,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log("hello bhai ashi gelam")
 })
