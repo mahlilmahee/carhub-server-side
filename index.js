@@ -1,7 +1,7 @@
 
 const express = require('express')
 const app = express();
-const port =process.env.PORT || 4000;
+const port =process.env.PORT || 9000;
 const { MongoClient } = require('mongodb');
 const cors=require('cors')
 const ObjectId=require('mongodb').ObjectId;
@@ -109,11 +109,14 @@ async function run() {
     const query={email:email};
     const result= await totalUsers.findOne(query);
     let isAdmin=false ;
-    if(result.role=="admin"){
+    console.log(result,'admin resutl show me the true ')
+    if(result?.role=="admin"){
       isAdmin=true;
     }
     res.json({admin:isAdmin})
    })
+
+
 
     app.get('/reviews', async(req,res)=>{
       const query={}
