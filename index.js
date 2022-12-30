@@ -32,7 +32,7 @@ async function run() {
         const movie =  carHub.find(query);
         const result =await movie.toArray();
         res.json(result);
-        console.log(result)
+        // console.log(result)
     })
     app.post('/cars',async(req,res)=>{
         const doc =req.body;
