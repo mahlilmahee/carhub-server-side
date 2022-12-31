@@ -161,3 +161,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log("hello bhai ashi gelam")
 })
+
+// export the exptress api ?
+module.exports = app;
