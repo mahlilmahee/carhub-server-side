@@ -8,7 +8,7 @@ const ObjectId=require('mongodb').ObjectId;
 require('dotenv').config()
 
 
-app.use(cors())
+app.use(cors({origin:'*'}))
 app.use(express.json());
 
 
@@ -25,20 +25,17 @@ async function run() {
       const purchaser=database.collection('carOrderer');
       const reviews=database.collection('reviewHub')
       const totalUsers=database.collection('userhub')
-      
-      app.all('/', function(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
-        next()
-      });
+
+     
 
 try{
   app.get('/cars',async(req,res)=>{
     const query={}
     const movie =  carHub.find(query);
     const result =await movie.toArray();
+
     res.json(result);
-    // console.log(result)
+    console.log(res.statusCode,'working properly without any hesitation ')
 })
 }
 catch(err){
@@ -49,12 +46,14 @@ catch(err){
         const result =await carHub.insertOne(doc);
         res.json(result);
     })
-    app.get('/explore',async(req,res)=>{
-        const query={}
-        const movie =  carHub.find(query);
-        const result =await movie.toArray();
-        res.json(result);
-    })
+
+
+    // app.get('/explore',async(req,res)=>{
+    //     const query={}
+    //     const movie =  carHub.find(query);
+    //     const result =await movie.toArray();
+    //     res.json(result);
+    // })
     app.get('/allOrders',async(req,res)=>{
         const query={}
         const movie =  purchaser.find(query);
@@ -86,11 +85,15 @@ catch(err){
         const movie = await carHub.findOne(query);
         res.json(movie);
     })
+    
+    
     app.post('/reviews', async(req,res)=>{
       const doc=req.body;
       const result = await reviews.insertOne(doc);
       res.json(result);
     })
+
+
     app.post('/registerUsers', async(req,res)=>{
       const doc=req.body;
       const result = await totalUsers.insertOne(doc);
@@ -127,14 +130,20 @@ catch(err){
    })
 
 
-
-    app.get('/reviews', async(req,res)=>{
-      const query={}
-      const movie =  reviews.find(query);
+     try{
+       app.get('/reviews', async(req,res)=>{
+      
+      const movie =  reviews.find({});
       const result =await movie.toArray();
       res.json(result);
+      console.log(res.statusCode, 'for the reviews')
 
     })
+     }
+     catch(err){
+      console.log
+     }
+   
     app.delete('/myorders/:id', async(req,res)=>{
       const id =req.params.id;
       const query={_id:ObjectId(id)};
