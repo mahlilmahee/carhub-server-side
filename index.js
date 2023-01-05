@@ -32,10 +32,7 @@ async function run() {
       
 
 try{
-  app.get('/cars',async(req,res,next)=>{
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next()
+  app.get('/cars',async(req,res)=>{
     const query={}
     const movie =  carHub.find(query);
     const result =await movie.toArray();
