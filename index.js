@@ -3,18 +3,22 @@ const express = require('express')
 const app = express();
 const port =process.env.PORT || 9000;
 const { MongoClient } = require('mongodb');
-const cors=require('cors')
+var cors = require('cors')
 const ObjectId=require('mongodb').ObjectId;
 require('dotenv').config()
 
 
-app.use(cors()) ;
+app.use(cors(
+  {
+    origin:'*'
+  }
+))
 app.use(express.json());
 
 
 const uri = 'mongodb+srv://carhub:jfslkaJFDGALK@cluster0.ufugb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-console.log(uri)
+// console.log(uri)
 async function run() {
 
     try {
@@ -27,13 +31,21 @@ async function run() {
       const totalUsers=database.collection('userhub')
       
 
-    app.get('/cars',async(req,res)=>{
-        const query={}
-        const movie =  carHub.find(query);
-        const result =await movie.toArray();
-        res.json(result);
-        // console.log(result)
-    })
+try{
+  app.get('/cars',async(req,res,next)=>{
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+    const query={}
+    const movie =  carHub.find(query);
+    const result =await movie.toArray();
+    res.json(result);
+    // console.log(result)
+})
+}
+catch(err){
+  console.log(err)
+}
     app.post('/cars',async(req,res)=>{
         const doc =req.body;
         const result =await carHub.insertOne(doc);
